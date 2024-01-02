@@ -83,10 +83,13 @@ public class AnalyzeSong : MonoBehaviour
         Debug.Log("Saved");
 
         string data = JsonUtility.ToJson( songData );
-        string path = AssetDatabase.GetAssetPath(sourceToAnalyze.clip);
+        string path = "Assets/Jsons/";
+        path += sourceToAnalyze.clip.name;
         path += ".json";
 
         System.IO.File.WriteAllText(path , data);
+
+        UnityEditor.AssetDatabase.Refresh();
     }
 
     private Beats LoadJsonToData()
