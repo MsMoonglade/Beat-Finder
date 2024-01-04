@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -17,7 +18,7 @@ public class AnalyzeSong : MonoBehaviour
     private Coroutine beatCoroutine;
 
     [SerializeField]
-    public Beats songData;
+    public Song currentSong;
 
     void Start()
     {
@@ -41,7 +42,7 @@ public class AnalyzeSong : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            songData = LoadJsonToData();
+            currentSong = LoadJsonToData();
         }
     }
 
@@ -52,6 +53,8 @@ public class AnalyzeSong : MonoBehaviour
         float beatInterval = 60f / i_bpm;
         float time = 0;
         float songtime = 0;
+
+        List<Beat> thisSongBeat = new List<Beat>();
 
         while (sourceToAnalyze.isPlaying)
         {
@@ -67,7 +70,7 @@ public class AnalyzeSong : MonoBehaviour
 
                 Beat beat = new Beat(sourceToAnalyze.time , averageBeatValue);
 
-                songData.beats.Add(beat);
+                thisSongBeat.Add(beat);
 
                 time = 0;
             }
@@ -75,14 +78,16 @@ public class AnalyzeSong : MonoBehaviour
             yield return null;
         }
 
-        SaveDataToJson();
+        Song o_analyzedSong = new Song(sourceToAnalyze.clip.name , sourceToAnalyze.clip.length , thisSongBeat);
+
+        SaveDataToJson(o_analyzedSong);
     }
 
-    private void SaveDataToJson()
+    private void SaveDataToJson(Song i_songToSave)
     {
         Debug.Log("Saved");
 
-        string data = JsonUtility.ToJson( songData );
+        string data = JsonUtility.ToJson(i_songToSave);
         string path = "Assets/Jsons/";
         path += sourceToAnalyze.clip.name;
         path += ".json";
@@ -92,15 +97,15 @@ public class AnalyzeSong : MonoBehaviour
         UnityEditor.AssetDatabase.Refresh();
     }
 
-    private Beats LoadJsonToData()
+    private Song LoadJsonToData()
     {
         Debug.Log("Loaded");
 
         Assert.IsNotNull(jsonFile);
-        Beats beats = new Beats();
-        beats = JsonUtility.FromJson<Beats>(jsonFile.text);
+        Song song = new Song();
+        song = JsonUtility.FromJson<Song>(jsonFile.text);
 
-        return beats;
+        return song;
     }
 
     private float ReturnAverage(float[] i_initial)
@@ -113,5 +118,13 @@ public class AnalyzeSong : MonoBehaviour
         }
 
         return (o_average / i_initial.Length) * 100;
+    }
+
+    public IEnumerator PlaySimplifiedSong()
+    {
+        while (true)
+        {
+
+        }
     }
 }

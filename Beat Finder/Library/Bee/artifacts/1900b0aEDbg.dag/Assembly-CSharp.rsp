@@ -355,6 +355,7 @@
 "Assets/Scripts/AnalyzeSong.cs"
 "Assets/Scripts/BeatDetector.cs"
 "Assets/Scripts/Beats/Beat.cs"
+"Assets/Scripts/Utilities/ReferenceByValue.cs"
 "Assets/_3RdParts/UniBpmAnalyzer/Example/UniBpmAnalyzerExample.cs"
 "Assets/_3RdParts/UniBpmAnalyzer/Scripts/UniBpmAnalyzer.cs"
 -langversion:9.0
