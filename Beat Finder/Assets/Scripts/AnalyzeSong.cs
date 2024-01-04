@@ -12,6 +12,7 @@ public class AnalyzeSong : MonoBehaviour
     public int partPerBpm;
 
     public AudioSource sourceToAnalyze;
+    public AudioSource playClipsource;
     public TextAsset jsonFile;
 
     private int bpm;
@@ -43,6 +44,8 @@ public class AnalyzeSong : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             currentSong = LoadJsonToData();
+
+            StartCoroutine(PlaySimplifiedSong());
         }
     }
 
@@ -122,9 +125,41 @@ public class AnalyzeSong : MonoBehaviour
 
     public IEnumerator PlaySimplifiedSong()
     {
-        while (true)
-        {
+        double timer = 0;
+        int currentSongBeatIndex = 0;
 
+        currentSong.MaxSpectrum();
+
+        yield return new WaitForSeconds(0.5f);
+
+        Debug.Log("Start Play");
+
+        sourceToAnalyze.volume = 0.25f;
+        sourceToAnalyze.Play();
+
+        while (timer < currentSong.songDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+
+            if (currentSong.beats.Count > currentSongBeatIndex)
+            {
+                if (timer >= currentSong.beats[currentSongBeatIndex].time)
+                {
+                    float percentValue = currentSong.GetSpectrumValuePercentage(currentSongBeatIndex);
+                    PlayClip(percentValue);
+                    currentSongBeatIndex++;
+                }
+            }
+
+            yield return null;
         }
+
+        Debug.Log("End Play");
+    }
+
+    private void PlayClip(float i_percentValue)
+    {        
+        AudioClip clip = ReferenceByValue.instance.ReturnValue<AudioClip>(ReferenceByValue.instance.possibleClip, i_percentValue);
+        playClipsource.PlayOneShot(clip);
     }
 }

@@ -10,17 +10,38 @@ public class Song
     public float songDuration;
     public List<Beat> beats = new List<Beat>();
 
+    public float currentMaxSpectrum = 0;
+
     public Song() 
     {
         songName = string.Empty;
         songDuration = 0;
-    }   
+        currentMaxSpectrum = 0;
+    }
 
     public Song(string i_name , float i_duration , List<Beat> i_beats)
     {
         songName = i_name;
         songDuration = i_duration;
         beats = i_beats;
+    }
+
+    public void MaxSpectrum()
+    {
+        foreach (var beat in beats)
+        {
+            if(beat.spectrumValue > currentMaxSpectrum)
+            {
+                currentMaxSpectrum = beat.spectrumValue;
+            }
+        }
+
+        Debug.Log("MaximumSpectrum is : " + currentMaxSpectrum);
+    }
+
+    public float GetSpectrumValuePercentage(int i_index)
+    {
+        return beats[i_index].spectrumValue/currentMaxSpectrum;
     }
 }
 
