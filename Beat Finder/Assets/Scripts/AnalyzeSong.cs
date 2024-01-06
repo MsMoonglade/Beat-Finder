@@ -128,7 +128,7 @@ public class AnalyzeSong : MonoBehaviour
         double timer = 0;
         int currentSongBeatIndex = 0;
 
-        currentSong.MaxSpectrum();
+        currentSong.MinMaxSpectrum();
 
         yield return new WaitForSeconds(0.5f);
 

@@ -281,12 +281,13 @@ MonoBehaviour:
   partPerBpm: 1
   sourceToAnalyze: {fileID: 1499663457}
   playClipsource: {fileID: 1569903239}
-  jsonFile: {fileID: 4900000, guid: 4dafeb5940455574a888a34c0dba09ba, type: 3}
+  jsonFile: {fileID: 4900000, guid: b38c9b2f2cb3f1740a12fb361c294c2d, type: 3}
   currentSong:
     songName: 
     songDuration: 0
     beats: []
     currentMaxSpectrum: 0
+    currentMinSpectrum: 10000
 --- !u!4 &752013114
 Transform:
   m_ObjectHideFlags: 0
@@ -465,7 +466,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 19a54d322e42b4d178746c7524bd8683, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ea7b7688835353841974db392d1cc057, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
