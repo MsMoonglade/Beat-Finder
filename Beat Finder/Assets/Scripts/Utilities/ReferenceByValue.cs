@@ -22,15 +22,11 @@ public class ReferenceByValue : MonoBehaviour
     /// <returns></returns>
     public T ReturnValue<T>(T[] possibleValue, float i_percentValue)
     {
-        float localIndex = Remap(i_percentValue, 0f, 1f, 0f, (float)possibleClip.Length);
-        
-        Debug.Log(Mathf.RoundToInt(localIndex));
+        Mathf.Clamp(i_percentValue, 0, possibleValue.Length-1);
+        Debug.Log(i_percentValue);
+
+        float localIndex = i_percentValue;        
 
         return possibleValue[Mathf.RoundToInt(localIndex)];
-    }
-
-    public float Remap(float value, float from1, float to1, float from2, float to2)
-    {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 }

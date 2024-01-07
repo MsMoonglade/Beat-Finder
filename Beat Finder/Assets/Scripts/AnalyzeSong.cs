@@ -61,7 +61,7 @@ public class AnalyzeSong : MonoBehaviour
 
         while (sourceToAnalyze.isPlaying)
         {
-            float[] spectrum = new float[128];
+            float[] spectrum = new float[256];
 
             AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
@@ -83,6 +83,21 @@ public class AnalyzeSong : MonoBehaviour
 
         Song o_analyzedSong = new Song(sourceToAnalyze.clip.name , sourceToAnalyze.clip.length , thisSongBeat);
 
+        float currentMinSpectrum = 100;
+        float currentMaxSpectrum = 0;
+        
+        foreach(Beat b in o_analyzedSong.beats)
+        {
+            if(b.spectrumValue != 0 && b.spectrumValue < currentMinSpectrum)
+                currentMinSpectrum = b.spectrumValue;
+
+            if(b.spectrumValue > currentMaxSpectrum)
+                currentMaxSpectrum = b.spectrumValue;
+        }
+
+        o_analyzedSong.currentMinSpectrum = currentMinSpectrum;
+        o_analyzedSong.currentMaxSpectrum = currentMaxSpectrum;
+
         SaveDataToJson(o_analyzedSong);
     }
 
@@ -102,8 +117,6 @@ public class AnalyzeSong : MonoBehaviour
 
     private Song LoadJsonToData()
     {
-        Debug.Log("Loaded");
-
         Assert.IsNotNull(jsonFile);
         Song song = new Song();
         song = JsonUtility.FromJson<Song>(jsonFile.text);
@@ -127,8 +140,6 @@ public class AnalyzeSong : MonoBehaviour
     {
         double timer = 0;
         int currentSongBeatIndex = 0;
-
-        currentSong.MinMaxSpectrum();
 
         yield return new WaitForSeconds(0.5f);
 

@@ -8,11 +8,11 @@ public class Song
 {
     public string songName;
     public float songDuration;
-    public List<Beat> beats = new List<Beat>();
 
     public float currentMaxSpectrum = 0;
     public float currentMinSpectrum = 0;
 
+    public List<Beat> beats = new List<Beat>();
 
     public Song() 
     {
@@ -29,28 +29,16 @@ public class Song
         beats = i_beats;
     }
 
-    public void MinMaxSpectrum()
-    {
-        foreach (var beat in beats)
-        {
-            if(beat.spectrumValue > currentMaxSpectrum)
-            {
-                currentMaxSpectrum = beat.spectrumValue;
-            }
-
-            if (beat.spectrumValue < currentMinSpectrum)
-            {
-                currentMinSpectrum = beat.spectrumValue;
-            }
-        }
-    }
-
     public float GetSpectrumValuePercentage(int i_index)
     {
-        return beats[i_index].spectrumValue/currentMaxSpectrum;
+        float normalizedValue = currentMaxSpectrum - currentMinSpectrum;
+        float normalizedSpectrum = beats[i_index].spectrumValue - currentMinSpectrum;
+
+        Debug.Log(normalizedValue);
+
+        return normalizedSpectrum / normalizedValue;
     }
 }
-
 
 [System.Serializable]
 public class Beat
