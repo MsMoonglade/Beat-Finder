@@ -29,60 +29,10 @@ public class SongAnalyzerManager : MonoBehaviour
             songAnalyzer.StartAnalyze(songSource);
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            currentSong = LoadJsonToData();
-
-            StartCoroutine(PlaySimplifiedSong());
+            songLoader.Load(jsonFileToAnalyze);
+            songLoader.StartPlaySongInJson(clipSource , songSource);
         }
-    }
-
-    private Song LoadJsonToData()
-    {
-        Assert.IsNotNull(jsonFile);
-        Song song = new Song();
-        song = JsonUtility.FromJson<Song>(jsonFile.text);
-
-        return song;
-    }
-
-
-
-    public IEnumerator PlaySimplifiedSong()
-    {
-        double timer = 0;
-        int currentSongBeatIndex = 0;
-
-        yield return new WaitForSeconds(0.5f);
-
-        Debug.Log("Start Play");
-
-        songSource.volume = 0.25f;
-        songSource.Play();
-
-        while (timer < currentSong.songDuration)
-        {
-            timer += Time.unscaledDeltaTime;
-
-            if (currentSong.beats.Count > currentSongBeatIndex)
-            {
-                if (timer >= currentSong.beats[currentSongBeatIndex].time)
-                {
-                    float percentValue = currentSong.GetSpectrumValuePercentage(currentSongBeatIndex);
-                    PlayClip(percentValue);
-                    currentSongBeatIndex++;
-                }
-            }
-
-            yield return null;
-        }
-
-        Debug.Log("End Play");
-    }
-
-    private void PlayClip(float i_percentValue)
-    {
-        AudioClip clip = ReferenceByValue.instance.ReturnValue<AudioClip>(ReferenceByValue.instance.possibleClip, i_percentValue);
-        songSource.PlayOneShot(clip);
     }
 }

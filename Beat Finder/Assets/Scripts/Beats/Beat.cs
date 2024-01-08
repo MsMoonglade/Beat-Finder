@@ -34,8 +34,6 @@ public class Song
         float normalizedValue = currentMaxSpectrum - currentMinSpectrum;
         float normalizedSpectrum = beats[i_index].spectrumValue - currentMinSpectrum;
 
-        Debug.Log(normalizedValue);
-
         return normalizedSpectrum / normalizedValue;
     }
 }

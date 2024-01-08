@@ -22,11 +22,14 @@ public class ReferenceByValue : MonoBehaviour
     /// <returns></returns>
     public T ReturnValue<T>(T[] possibleValue, float i_percentValue)
     {
-        Mathf.Clamp(i_percentValue, 0, possibleValue.Length-1);
-        Debug.Log(i_percentValue);
+        float arrayIndex = 1f / possibleValue.Length;
 
-        float localIndex = i_percentValue;        
+        int localArrayslot = Mathf.RoundToInt(i_percentValue / arrayIndex);
 
-        return possibleValue[Mathf.RoundToInt(localIndex)];
+        localArrayslot = Mathf.Clamp(localArrayslot, 0, possibleValue.Length - 1);
+
+        Debug.Log(localArrayslot + " with a percent of " + i_percentValue);
+
+        return possibleValue[localArrayslot];
     }
 }
